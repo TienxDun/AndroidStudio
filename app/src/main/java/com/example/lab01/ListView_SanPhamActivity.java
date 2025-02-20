@@ -1,6 +1,9 @@
 package com.example.lab01;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -28,6 +31,19 @@ public class ListView_SanPhamActivity extends AppCompatActivity {
         });
         addControls();
         loadData();
+        addEvents();
+    }
+
+    private void addEvents() {
+        lvSanPham.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SanPham sp = sanPhamAadapter.getItem(position);
+                Intent intent = new Intent(ListView_SanPhamActivity.this, Details_SanPhamActivity.class);
+                intent.putExtra("sanpham", sp);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadData() {
