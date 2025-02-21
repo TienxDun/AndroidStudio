@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,6 +23,7 @@ import com.example.lab01.modun.MonHoc;
 import com.example.lab01.modun.SinhVien;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class HocSpinnerAutocompleteActivity extends AppCompatActivity {
     Spinner spinnerMonHoc;
@@ -84,6 +86,25 @@ public class HocSpinnerAutocompleteActivity extends AppCompatActivity {
                 monHoc.getDsSinhVien().add(sv); //add sinhvien vao dsSinhVien cua monHoc
                 adapterSinhVien.notifyDataSetChanged(); //cap nhat lai adapter
                 clearText();
+            }
+        });
+        //Viet su kien cho nut Today
+        btnToday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance(); //Lay ra ngay thang nam gio phut giay cua he thong
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH); //Thang bat dau tu 0
+                int year = calendar.get(Calendar.YEAR);
+                edtDate.setText(String.valueOf(day) + "/" + String.valueOf(month + 1) + "/" +String.valueOf(year));
+            }
+        });
+        //Viet su kien chon ngay trong calander
+        myCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                edtDate.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(month + 1) + "/" +String.valueOf(year));
+
             }
         });
     }

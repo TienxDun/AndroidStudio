@@ -153,7 +153,7 @@
 
             <Button
                 android:id="@+id/btnToday"
-                android:layout_width="wrap_content"
+                android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Today" />
@@ -164,8 +164,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="5"
-                android:inputType="text"
-                android:hint="Date" />
+                android:gravity="center_horizontal"
+                android:hint="Date"
+                android:inputType="date"
+                tools:ignore="TouchTargetSizeCheck" />
+
         </LinearLayout>
 
         <CalendarView
