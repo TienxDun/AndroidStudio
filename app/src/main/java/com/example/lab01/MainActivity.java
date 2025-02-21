@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton imageButton4, imageButton5,imageButton6, imgLab03, imgLab04;
+    ImageButton imageButton4, imageButton5,imageButton6, imgLab03, imgLab04, imgLab05;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         imageButton5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         imageButton6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         imgLab03.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        imgLab05.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HocSpinnerAutocompleteActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -87,5 +91,6 @@ public class MainActivity extends AppCompatActivity {
         imageButton6 = findViewById(R.id.imageButton6);
         imgLab03 = findViewById(R.id.imgLab03);
         imgLab04 = findViewById(R.id.imgLab04);
+        imgLab05 = findViewById(R.id.imgLab05);
     }
 }

@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -13,6 +18,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.lab01.modun.MonHoc;
+import com.example.lab01.modun.SinhVien;
+
 import java.util.ArrayList;
 
 public class HocSpinnerAutocompleteActivity extends AppCompatActivity {
@@ -20,6 +28,18 @@ public class HocSpinnerAutocompleteActivity extends AppCompatActivity {
     TextView txtMonHoc;
     ArrayList<String> arrMonHoc;
     ArrayAdapter<String> adapterMonHoc;
+    ArrayList<MonHoc> arrMonHoc2;
+    ArrayAdapter<MonHoc> adapterMonHoc2;
+    EditText edtMaSV, edtTenSV, edtDate;
+    Button btnSaveSV, btnToday;
+    ListView lvDsSinhVien;
+    MonHoc monHoc = null;
+    ArrayAdapter<SinhVien> adapterSinhVien;
+    ArrayList<SinhVien> arrSinhVien;
+    String[] listTinhThanh;
+    ArrayAdapter<String> adapterTinhThanh;
+    AutoCompleteTextView  autoDiaChiSV;
+    CalendarView myCalendar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +57,14 @@ public class HocSpinnerAutocompleteActivity extends AppCompatActivity {
         spinnerMonHoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String value = adapterMonHoc.getItem(position);
-                txtMonHoc.setText(value);
+            //                String value = adapterMonHoc.getItem(position);
+            //                txtMonHoc.setText(value);
+
+                monHoc = arrMonHoc2.get(position);
+                txtMonHoc.setText(monHoc.getTenMonHoc());
+                adapterSinhVien.clear();
+                adapterSinhVien.addAll(monHoc.getDsSinhVien());
+                adapterSinhVien.notifyDataSetChanged();
             }
 
             @Override
@@ -46,11 +72,34 @@ public class HocSpinnerAutocompleteActivity extends AppCompatActivity {
 
             }
         });
-
+        //Viet su kien cho nut SaveSV
+        btnSaveSV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SinhVien sv = new SinhVien();
+                sv.setMaSV(edtMaSV.getText().toString());
+                sv.setTenSV(edtTenSV.getText().toString());
+                sv.setDiaChi(autoDiaChiSV.getText().toString());
+                arrSinhVien.add(sv); //add sinhvien vao arrSinhVien
+                monHoc.getDsSinhVien().add(sv); //add sinhvien vao dsSinhVien cua monHoc
+                adapterSinhVien.notifyDataSetChanged(); //cap nhat lai adapter
+                clearText();
+            }
+        });
     }
     private void addControls() {
         txtMonHoc=findViewById(R.id.txtMonHoc);
         spinnerMonHoc=findViewById(R.id.spinnerMonHoc);
+        lvDsSinhVien=findViewById(R.id.lvDsSinhVien);
+        edtMaSV=findViewById(R.id.edtMaSV);
+        edtTenSV=findViewById(R.id.edtTenSV);
+        btnSaveSV=findViewById(R.id.btnSaveSV);
+        autoDiaChiSV=findViewById(R.id.autoDiaChiSV);
+        edtDate=findViewById(R.id.edtDate);
+        btnToday=findViewById(R.id.btnToday);
+        myCalendar=findViewById(R.id.myCalendar);
+
+
         //Dữ liệu môn học cho adapter
         arrMonHoc=new ArrayList<>();
         arrMonHoc.add("Android");
@@ -61,9 +110,38 @@ public class HocSpinnerAutocompleteActivity extends AppCompatActivity {
         arrMonHoc.add("Lập trình di động");
 
         //Adapter
-        adapterMonHoc=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,arrMonHoc);
-        spinnerMonHoc.setAdapter(adapterMonHoc);
+        //        adapterMonHoc=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,arrMonHoc);
+        //        adapterMonHoc.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        //        spinnerMonHoc.setAdapter(adapterMonHoc);
+        arrMonHoc2 = new ArrayList<>(); //Khoi tao danh sach
+        arrMonHoc2.add(new MonHoc("Android"));
+        arrMonHoc2.add(new MonHoc("Lập trình cơ bản"));
+        arrMonHoc2.add(new MonHoc("Tin học văn phòng"));
+        arrMonHoc2.add(new MonHoc("Phân tích phần mềm"));
+        arrMonHoc2.add(new MonHoc("Lập trình Web"));
+        arrMonHoc2.add(new MonHoc("Lập trình di động"));
+        //Khoi tao Adapter
+        adapterMonHoc2 = new ArrayAdapter<>(HocSpinnerAutocompleteActivity.this, android.R.layout.simple_list_item_1, arrMonHoc2);
+        spinnerMonHoc.setAdapter(adapterMonHoc2);
+
+        //Xu ly du lieu cho ListView Sinh Vien
+        //Khoi tao danh sach arrSinhVien, adapterSinhVien
+        arrSinhVien = new ArrayList<>();
+        adapterSinhVien = new ArrayAdapter<>(HocSpinnerAutocompleteActivity.this, android.R.layout.simple_list_item_1, arrSinhVien);
+        lvDsSinhVien.setAdapter(adapterSinhVien);
+
+        //Xu ly du lieu cho AutoCompleteTextView Tinh Thanh
+        listTinhThanh = getResources().getStringArray(R.array.tinh_thanh);
+        adapterTinhThanh = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listTinhThanh);
+        autoDiaChiSV.setAdapter(adapterTinhThanh);
+
     }
 
+    public void clearText(){
+        edtMaSV.setText("");
+        edtTenSV.setText("");
+        autoDiaChiSV.setText("");
+        edtMaSV.requestFocus();
 
+    }
 }
